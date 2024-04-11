@@ -10,6 +10,6 @@ def visualize_boolean_network(network):
             G.add_edge(f"Vertex {input_vertex_index}", f"Vertex {i}")
 
     pos = nx.spring_layout(G)
-    node_colors = ["red" if G.nodes[node]["state"] else "blue" for node in G.nodes()]
-    nx.draw(G, pos, with_labels=True, node_size=2000, node_color=node_colors, font_size=10, font_weight="bold")
+    node_colors = ["blue" if G.nodes[node]["state"] else "red" for node in G.nodes()]
+    nx.draw(G, pos, with_labels=True, node_size=2000, node_color=node_colors, font_size=10, font_weight="bold", arrows=True)
     plt.show()

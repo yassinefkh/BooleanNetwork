@@ -60,12 +60,13 @@ class BooleanNetwork:
             target = random.randint(0, self.size - 1)
             self.connect_vertices(source, target)
             
-            
     def assign_boolean_functions(self):
         boolean_functions = [self.AND_gate, self.OR_gate, self.NOT_gate, self.XOR_gate]
         for vertex in self.vertices:
             vertex.bool_func_index = random.randint(0, len(boolean_functions) - 1)
             vertex.boolean_function = boolean_functions[vertex.bool_func_index]
+            print(f"Node {self.vertices.index(vertex)} assigned boolean function: {vertex.boolean_function.__name__}")
+
 
     def apply_boolean_functions(self):
         for vertex in self.vertices:
