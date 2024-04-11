@@ -17,7 +17,11 @@ class BooleanNetwork:
         return not inputs[0]
 
     def XOR_gate(self, inputs):
-        return inputs[0] != inputs[1]
+        if len(inputs) >= 2:
+            return inputs[0] != inputs[1]
+        else:
+            return False  
+
 
     def create(self):
         for _ in range(self.size):
@@ -55,3 +59,20 @@ class BooleanNetwork:
             source = random.randint(0, self.size - 1)
             target = random.randint(0, self.size - 1)
             self.connect_vertices(source, target)
+            
+            
+    def assign_boolean_functions(self):
+        boolean_functions = [self.AND_gate, self.OR_gate, self.NOT_gate, self.XOR_gate]
+        for vertex in self.vertices:
+            vertex.bool_func_index = random.randint(0, len(boolean_functions) - 1)
+            vertex.boolean_function = boolean_functions[vertex.bool_func_index]
+
+    def apply_boolean_functions(self):
+        for vertex in self.vertices:
+            input_states = [self.vertices[i].state for i in vertex.inputs]
+            vertex.state = vertex.boolean_function(input_states)
+
+    def evolve_network(self):
+        self.assign_boolean_functions()
+        for _ in range(self.size):  
+            self.apply_boolean_functions()
