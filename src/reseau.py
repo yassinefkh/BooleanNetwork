@@ -18,8 +18,14 @@ class Reseau:
     def etape(self):
         for s in self.reseau:
             s.appliquer_fonction(self.reseau)
+            
+    def afficher_liaisons(self):
+        for i, sommet in enumerate(self.reseau):
+            print(f"Sommet {i} : {sommet.inputs}")
 
-    def __str__(self):
-            return ''.join('●' if sommet.etat else '○' for sommet in self.reseau) 
+    """ def __str__(self):
+            return ''.join('●' if sommet.etat else '○' for sommet in self.reseau)  """
         
-    
+    def __str__(self):
+        return ''.join(f'{sommet.func_index:2} ' + ('●' if sommet.etat else '○') for sommet in self.reseau)
+
