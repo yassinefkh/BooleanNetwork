@@ -8,7 +8,7 @@ def simuler(taille, connectivite, nb_etapes):
         reseau.etape()
 
 if __name__ == "__main__":
-    taille = 10
-    connectivite = 4
+    taille = 100
+    connectivite = 100
     nb_etapes = 50
     simuler(taille, connectivite, nb_etapes)
