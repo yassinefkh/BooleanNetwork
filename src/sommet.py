@@ -1,3 +1,5 @@
+import random
+
 class Sommet:
     def __init__(self, nb_inputs, func_index):
         self.etat = False
@@ -14,25 +16,23 @@ class Sommet:
 
     def appliquer_fonction(self, reseau):
         args = [reseau[i].etat for i in self.inputs]
-        self.etat = self.fonctions_bool[self.func_index](args)
+        self.etat = self.calculer_etat(args)
         self.historique_fonctions.append(self.func_index)
+
+    def calculer_etat(self, inputs):
+        if self.func_index == 0:  # Fonction NAND
+            return not all(inputs)
+        elif self.func_index == 1:  # Fonction AND
+            return all(inputs)
+        elif self.func_index == 2:  # Fonction XOR
+            return sum(inputs) % 2 == 1
+        elif self.func_index == 3:  # Fonction Identité
+            return inputs[0]  
+        else:
+            raise ValueError("Index de fonction non valide")
 
     def __str__(self):
         return str(int(self.etat))
     
     def changer_fonction(self, func_index):
         self.func_index = func_index
-
-
-    fonctions_bool = {
-        0: lambda x: False,
-        1: lambda x: x[0],
-        2: lambda x: x[1],
-        3: lambda x: x[0] and x[1],
-        4: lambda x: not x[0] and x[1],
-        5: lambda x: x[0] and not x[1],
-        6: lambda x: x[0] or x[1],
-        7: lambda x: not x[0] or x[1],
-        8: lambda x: x[0] != x[1],
-        9: lambda x: x[0] == x[1],
-    }
