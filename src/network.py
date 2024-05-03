@@ -13,6 +13,8 @@ class Network:
             self.create_non_homogeneous_network()
             
             
+    
+            
     def create_network(self):
         """
         Creates the network by initializing vertices with random connections.
@@ -69,8 +71,22 @@ class Network:
         Returns a string representation of the network's state.
         """
         return ''.join(('1' if vertex.state else ' ') for vertex in self.network)
-
-
+    
+    def detect_attractors(self, states):
+        attractors = []
+        for i, state in enumerate(states):
+            attractor_found = False
+            for j in range(i + 1, len(states)):
+                if state == states[j]:
+                    attractors.append(states[i:j])
+                    attractor_found = True
+                    break
+            if attractor_found:
+                break
+        return attractors
+    
+   
+    
 def simulate(size, connectivity, num_steps, is_homogeneous=True):
     network = Network(size, connectivity, is_homogeneous)
     network.display_connections()
