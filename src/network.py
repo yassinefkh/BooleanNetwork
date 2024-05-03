@@ -3,19 +3,16 @@ import random
 
 
 class Network:
-    def __init__(self, size, connectivity):
-        """
-        Initializes the Network class.
-
-        Args:
-            size (int): The number of vertices in the network.
-            connectivity (int): The maximum number of incoming connections for each vertex.
-        """
+    def __init__(self, size, connectivity, is_homogeneous=True):
         self.size = size
         self.connectivity = connectivity
-        self.network = []  # List to store the vertices of the network
-        self.create_network()  # Calling the method to create the network
-
+        self.network = [Vertex(connectivity, random.randint(0, 15)) for _ in range(size)]
+        if is_homogeneous:
+            self.create_homogeneous_network()
+        else:
+            self.create_non_homogeneous_network()
+            
+            
     def create_network(self):
         """
         Creates the network by initializing vertices with random connections.
@@ -30,6 +27,28 @@ class Network:
                 # Avoiding redundant connections and self-connections
                 if k not in vertex.inputs and k != self.network.index(vertex):
                     vertex.add_input(k)
+
+    def create_homogeneous_network(self):
+        k = self.connectivity
+        for vertex in self.network:
+            possible_inputs = list(range(self.size))
+            possible_inputs.remove(self.network.index(vertex))
+            vertex.inputs = random.sample(possible_inputs, k)
+
+    def create_non_homogeneous_network(self):
+        for vertex in self.network:
+            possible_inputs = list(range(self.size))
+            possible_inputs.remove(self.network.index(vertex))
+            k = random.randint(1, self.connectivity)
+            vertex.inputs = random.sample(possible_inputs, k)
+
+    def mutate_random_functions(self, mutation_rate=0.1):
+        num_mutations = int(self.size * mutation_rate)
+        mutated_vertices = random.sample(self.network, num_mutations)
+        for vertex in mutated_vertices:
+            new_func_index = random.randint(0, 15)
+            vertex.change_function(new_func_index)
+
 
     def step(self):
         """
@@ -49,21 +68,19 @@ class Network:
         """
         Returns a string representation of the network's state.
         """
-        return ''.join(('■' if vertex.state else '□') for vertex in self.network)
+        return ''.join(('1' if vertex.state else ' ') for vertex in self.network)
 
 
-def simulate(size, connectivity, num_steps):
-    network = Network(size, connectivity)
+def simulate(size, connectivity, num_steps, is_homogeneous=True):
+    network = Network(size, connectivity, is_homogeneous)
     network.display_connections()
     for i in range(num_steps):
+        network.mutate_random_functions(mutation_rate=0.02)
         print(network)
-        for j in range(size):
-            func_index = int(input(f"Enter the index of the boolean function to apply to vertex {j} (0: NAND, 1: AND, 2: XOR, 3: IDENTITY): "))
-            network.network[j].change_function(func_index)
         network.step()
 
 if __name__ == "__main__":
-    size = 6
-    connectivity = 4
-    num_steps = 10
+    size = 20
+    connectivity = 5
+    num_steps = 100
     simulate(size, connectivity, num_steps)
