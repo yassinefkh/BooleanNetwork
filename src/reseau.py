@@ -10,11 +10,16 @@ class Reseau:
         self.creer_reseau()
 
     def creer_reseau(self):
-        self.reseau = [Sommet(self.connectivite, i % 3) for i in range(self.taille)]  # 3 fct ici
-        for i in range(self.taille):
-            for j in range(self.connectivite):
-                k = int(self.taille * random.random())
-                self.reseau[i].ajouter_input(k)
+        # creation of nodes with random boolean function among available
+        self.reseau = [Sommet(self.connectivite, random.randint(0, 15)) for i in range(self.taille)]
+        
+        # add random connections
+        for sommet in self.reseau:
+            while len(sommet.inputs) < self.connectivite:
+                k = random.randint(0, self.taille - 1)
+                # avoid redundant connections and self-connection
+                if k not in sommet.inputs and k != self.reseau.index(sommet):
+                    sommet.ajouter_input(k)
 
     def etape(self):
         for s in self.reseau:
@@ -29,7 +34,7 @@ class Reseau:
         return ''.join(f'{sommet.func_index:2} ' + ('●' if sommet.etat else '○') for sommet in self.reseau)
     """
     def __str__(self):
-        return ''.join(('1' if sommet.etat else ' ') for sommet in self.reseau)
+        return ''.join(('1' if sommet.etat else '0') for sommet in self.reseau)
 
 
 def simuler(taille, connectivite, nb_etapes):
