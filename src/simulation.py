@@ -1,14 +1,22 @@
-from reseau import Reseau
+from network import Network  
 
-def simuler(taille, connectivite, nb_etapes):
-    reseau = Reseau(taille, connectivite)
-    reseau.afficher_liaisons()
-    for i in range(nb_etapes):
-        print(reseau)
-        reseau.etape()
+def simulate(size, connectivity, num_steps):
+    """
+    Simulates the network for a given number of steps.
+
+    Args:
+        size (int): The number of vertices in the network.
+        connectivity (int): The maximum number of incoming connections for each vertex.
+        num_steps (int): The number of steps to simulate.
+    """
+    network = Network(size, connectivity)
+    network.display_connections()
+    for i in range(num_steps):
+        print(network)
+        network.step()
 
 if __name__ == "__main__":
-    taille = 100
-    connectivite = 100
-    nb_etapes = 50
-    simuler(taille, connectivite, nb_etapes)
+    size = 20
+    connectivity = 5
+    num_steps = 100
+    simulate(size, connectivity, num_steps)
