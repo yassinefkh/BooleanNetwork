@@ -1,5 +1,7 @@
 from network import Network  
 import random
+import pandas as pd
+from collections import defaultdict
 
 def initialize_random_states(network):
     for vertex in network.network:
@@ -63,8 +65,16 @@ def simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, is
     return attractors_results
 
 
-
-
+def analyze_attractors(attractors_results):
+    attractor_counts = defaultdict(int)
+    for attractors in attractors_results:
+        for attractor in attractors:
+            if len(attractor) == 1:
+                attractor_type = 'stable'
+            else:
+                attractor_type = 'periodic'
+            attractor_counts[(attractor_type, tuple(attractor))] += 1
+    return attractor_counts
 
 if __name__ == "__main__":
     size = 20
@@ -74,6 +84,8 @@ if __name__ == "__main__":
     num_trials = 3
     attractors = simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, mutation_rate=mutation_rate)
     print("Attracteurs détectés :", attractors)
+    attractor_counts = analyze_attractors(attractors)
+    print("Attractor counts:", attractor_counts)
 
 
 
