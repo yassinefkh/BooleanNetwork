@@ -2,6 +2,9 @@ from network import Network
 import random
 import pandas as pd
 from collections import defaultdict
+import csv
+import itertools
+
 
 def initialize_random_states(network):
     for vertex in network.network:
@@ -28,7 +31,7 @@ def simulate(size, connectivity, num_steps, is_homogeneous=True):
         
         
         
-def simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, is_homogeneous=True, mutation_rate=0.02):
+def simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, is_homogeneous=True, mutation_rate=0.02, display_evolution=True):
     """
     Simulates the network multiple times and detects attractors, with an option to display the evolution of the network states.
 
@@ -39,13 +42,12 @@ def simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, is
         num_trials (int): The number of trials to perform the simulation.
         is_homogeneous (bool): Whether the network is homogeneous.
         mutation_rate (float): Mutation rate for the random function.
+        display_evolution (bool): Whether to display the evolution of the network states.
 
     Returns:
         list: A list of attractors detected in each trial.
     """
-  
-    display_evolution = input("Do you want to display the evolution of the network states? (yes/no): ").strip().lower() == 'yes'
-    
+
     attractors_results = []
     for trial in range(num_trials):
         network = Network(size, connectivity, is_homogeneous)
@@ -65,6 +67,7 @@ def simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, is
     return attractors_results
 
 
+
 def analyze_attractors(attractors_results):
     attractor_counts = defaultdict(int)
     for attractors in attractors_results:
@@ -76,7 +79,47 @@ def analyze_attractors(attractors_results):
             attractor_counts[(attractor_type, tuple(attractor))] += 1
     return attractor_counts
 
+
+def run_simulations(params, display_evolution=True):
+    results = []
+    for size, connectivity, num_steps, num_trials, mutation_rate in params:
+        for trial in range(num_trials):
+            attractors = simulate_and_detect_attractors(size, connectivity, num_steps, 1, mutation_rate=mutation_rate, display_evolution=display_evolution)
+            result = {
+                'size': size,
+                'connectivity': connectivity,
+                'num_steps': num_steps,
+                'trial': trial,
+                'mutation_rate': mutation_rate,
+                'attractors': attractors[0]
+            }
+            results.append(result)
+    return results
+
+
+def save_results_to_csv(results, filename):
+    keys = results[0].keys()
+    with open(filename, 'w', newline='') as output_file:
+        dict_writer = csv.DictWriter(output_file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(results)
+
+
 if __name__ == "__main__":
+    sizes = [20, 50, 100]  
+    connectivities = [2, 5, 10] 
+    num_steps = [50, 100, 150] 
+    num_trials = [5, 10, 20]  
+    mutation_rates = [0.01, 0.03, 0.05] 
+
+    params = list(itertools.product(sizes, connectivities, num_steps, num_trials, mutation_rates))
+                   
+    results = run_simulations(params)
+
+    save_results_to_csv(results, 'results.csv')
+
+
+""" if __name__ == "__main__":
     size = 20
     connectivity = 2
     num_steps = 100
@@ -86,7 +129,7 @@ if __name__ == "__main__":
     print("Attracteurs détectés :", attractors)
     attractor_counts = analyze_attractors(attractors)
     print("Attractor counts:", attractor_counts)
-
+ """
 
 
 """ if __name__ == "__main__":
