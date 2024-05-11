@@ -34,7 +34,7 @@ class Network:
         for vertex in self.network:
             while len(vertex.inputs) < self.connectivity:
                 k = random.randint(0, self.size - 1)
-                # Avoiding redundant connections and self-connections
+                # avoiding redundant connections and self-connections
                 if k not in vertex.inputs and k != self.network.index(vertex):
                     vertex.add_input(k)
 
