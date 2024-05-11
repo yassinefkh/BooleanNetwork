@@ -16,12 +16,13 @@ This project is a Python-based Boolean Network Simulator that models the evoluti
   - Inputs: List of indices or pointers to the input nodes that influence the state of the current node.
   - Boolean Function Index: Index indicating the Boolean function used to compute the state of the node.
 
-- **Boolean Functions:** Four basic Boolean functions are implemented:
+- **Boolean Functions:** 16 basic Boolean functions are implemented:
 
   1. AND Gate
   2. OR Gate
   3. NOT Gate
   4. XOR Gate
+     ...
 
 - **Network Evolution:** The network evolves over time by applying the Boolean functions to each node based on the states of its input nodes.
 
