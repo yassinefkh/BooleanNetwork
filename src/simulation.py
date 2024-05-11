@@ -67,7 +67,6 @@ def simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, is
     return attractors_results
 
 
-
 def analyze_attractors(attractors_results):
     attractor_counts = defaultdict(int)
     for attractors in attractors_results:
@@ -105,7 +104,7 @@ def save_results_to_csv(results, filename):
         dict_writer.writerows(results)
 
 
-if __name__ == "__main__":
+""" if __name__ == "__main__":
     sizes = [20, 50, 100]  
     connectivities = [2, 5, 10] 
     num_steps = [50, 100, 150] 
@@ -117,19 +116,19 @@ if __name__ == "__main__":
     results = run_simulations(params)
 
     save_results_to_csv(results, 'results.csv')
+ """
 
-
-""" if __name__ == "__main__":
+if __name__ == "__main__":
     size = 20
     connectivity = 2
-    num_steps = 100
+    num_steps = 40
     mutation_rate = 0.00
-    num_trials = 3
+    num_trials = 1
     attractors = simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, mutation_rate=mutation_rate)
     print("Attracteurs détectés :", attractors)
     attractor_counts = analyze_attractors(attractors)
     print("Attractor counts:", attractor_counts)
- """
+
 
 
 """ if __name__ == "__main__":
