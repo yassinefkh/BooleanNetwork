@@ -104,26 +104,12 @@ def save_results_to_csv(results, filename):
         dict_writer.writerows(results)
 
 
-""" if __name__ == "__main__":
-    sizes = [20, 50, 100]  
-    connectivities = [2, 5, 10] 
-    num_steps = [50, 100, 150] 
-    num_trials = [5, 10, 20]  
-    mutation_rates = [0.01, 0.03, 0.05] 
-
-    params = list(itertools.product(sizes, connectivities, num_steps, num_trials, mutation_rates))
-                   
-    results = run_simulations(params)
-
-    save_results_to_csv(results, 'results.csv')
- """
-
 if __name__ == "__main__":
     size = 20
     connectivity = 2
     num_steps = 40
     mutation_rate = 0.00
-    num_trials = 1
+    num_trials = 5
     attractors = simulate_and_detect_attractors(size, connectivity, num_steps, num_trials, mutation_rate=mutation_rate)
     print("Attracteurs détectés :", attractors)
     attractor_counts = analyze_attractors(attractors)
